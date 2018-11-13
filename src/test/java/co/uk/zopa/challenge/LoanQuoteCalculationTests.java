@@ -2,20 +2,16 @@ package co.uk.zopa.challenge;
 
 import co.uk.zopa.challenge.exceptions.InvalidLoanAmount;
 import co.uk.zopa.challenge.exceptions.MarketInsufficientFunds;
-import co.uk.zopa.challenge.interfaces.LoanQuoteCalculationService;
-import co.uk.zopa.challenge.model.Lender;
+import co.uk.zopa.challenge.interfaces.QuoteCalculationService;
 import co.uk.zopa.challenge.model.Loan;
 import co.uk.zopa.challenge.model.LoanQuote;
-import co.uk.zopa.challenge.services.LoanQuoteCalculationServiceImpl;
-import co.uk.zopa.challenge.utilities.CSVUtility;
+import co.uk.zopa.challenge.services.LoanQuoteCalculationService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.io.FileNotFoundException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -26,10 +22,10 @@ import static org.junit.Assert.assertTrue;
 public class LoanQuoteCalculationTests {
 
 	@Autowired
-	private LoanQuoteCalculationServiceImpl loanQuoteCalculation;
+	private QuoteCalculationService loanQuoteCalculation;
 
 	@Test
-	public void testExampleProvided() {
+	public void testExampleProvided() throws InvalidLoanAmount, MarketInsufficientFunds {
 
 		Loan loan = new Loan(1000);
 		LoanQuote quote = loanQuoteCalculation.processQuote(loan);
@@ -43,7 +39,7 @@ public class LoanQuoteCalculationTests {
 
 		LoanQuote loan = new LoanQuote();
 		loan.setAmount(1000);
-		assertEquals(String.format("%.1f",loanQuoteCalculation.calculateRate(loan) * 100),"7.0");
+		assertEquals(String.format("%.1f",loanQuoteCalculation.calculateWeightedAverageRate(loan) * 100),"7.0");
 
 	}
 
@@ -52,7 +48,7 @@ public class LoanQuoteCalculationTests {
 
 		LoanQuote loan = new LoanQuote();
 		loan.setAmount(1000);
-		loan.setRate(loanQuoteCalculation.calculateRate(loan));
+		loan.setRate(loanQuoteCalculation.calculateWeightedAverageRate(loan));
 		assertEquals(String.format("%.2f",loanQuoteCalculation.calculateRepayment(loan)),"30.88");
 
 	}
@@ -62,7 +58,7 @@ public class LoanQuoteCalculationTests {
 
 		LoanQuote loan = new LoanQuote();
 		loan.setAmount(1000);
-		loan.setRate(loanQuoteCalculation.calculateRate(loan));
+		loan.setRate(loanQuoteCalculation.calculateWeightedAverageRate(loan));
 		loan.setRepayment(loanQuoteCalculation.calculateRepayment(loan));
 		assertEquals(String.format("%.2f",loanQuoteCalculation.calculateTotalRepayment(loan)),"1111.64");
 	}

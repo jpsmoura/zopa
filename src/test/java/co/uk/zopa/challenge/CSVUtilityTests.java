@@ -21,7 +21,4 @@ public class CSVUtilityTests {
 		CSVUtility.loadCSVFile("Market Data for Exercise - csv.csv", Lender.class);
 	}
 
-
-
-
 }

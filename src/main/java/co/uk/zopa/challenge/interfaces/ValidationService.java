@@ -4,7 +4,7 @@ import co.uk.zopa.challenge.exceptions.InvalidLoanAmount;
 import co.uk.zopa.challenge.exceptions.MarketInsufficientFunds;
 import co.uk.zopa.challenge.model.Loan;
 
-public interface LoanQuoteValidationService {
+public interface ValidationService {
 
-    public void validateLoanRequest(Loan loanRequest) throws InvalidLoanAmount, MarketInsufficientFunds;
+    public void validateLoanAmount(Loan loan) throws InvalidLoanAmount;
 }

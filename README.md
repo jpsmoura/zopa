@@ -4,7 +4,7 @@ ZOPA Technical Coding Challenge.
 # Assumptions
 - The CSV doesn't provide a unique identifier for each Lender. The data structure allows duplicates i.e. A lender with the same name can have multiple records with different amounts/rates.
 - The decimal values for repayment amounts and the rate of the loan use the round half up algorithm provided by Java's String.format default behaviour.
-- Please add the MarketService CSV file to the classpath for simplicity i.e. Every file under src/main/resources will be loaded into the classpath. The sample CSV file is already there and ready to be executed `MarketService Data for Exercise - csv.csv`
+- Please add the MarketCSVService CSV file to the classpath for simplicity i.e. Every file under src/main/resources will be loaded into the classpath. The sample CSV file is already there and ready to be executed `MarketCSVService Data for Exercise - csv.csv`
 
 # Technology Stack
 
@@ -32,7 +32,7 @@ In order to increase readability and remove boilerplate code, [project lombok](h
 2. Order the collection by rate since we will be offering the best possible rates
 3. Validate quote request
    * Check if the loan amount doesn't violate restrictions
-   * Verify if the marketService can satisfy the loan
+   * Verify if the marketCSVService can satisfy the loan
 4. Calculate the weighted average to provide the borrower with a rate
 5. Calculate monthly and total repayment using the following formula
     <img src="images/formula.png" width="450" height="225">

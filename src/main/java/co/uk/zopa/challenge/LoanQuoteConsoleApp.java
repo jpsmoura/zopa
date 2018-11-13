@@ -2,8 +2,8 @@ package co.uk.zopa.challenge;
 
 import co.uk.zopa.challenge.exceptions.InvalidLoanAmount;
 import co.uk.zopa.challenge.exceptions.MarketInsufficientFunds;
-import co.uk.zopa.challenge.interfaces.LoanQuoteCalculationService;
-import co.uk.zopa.challenge.interfaces.LoanQuoteValidationService;
+import co.uk.zopa.challenge.interfaces.QuoteCalculationService;
+import co.uk.zopa.challenge.interfaces.ValidationService;
 import co.uk.zopa.challenge.model.Loan;
 import co.uk.zopa.challenge.model.LoanQuote;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +18,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class LoanQuoteConsoleApp implements CommandLineRunner {
 
     @Autowired
-    private LoanQuoteCalculationService loanCalculationService;
+    private QuoteCalculationService quoteCalculationService;
 
     @Autowired
-    private LoanQuoteValidationService loanValidationService;
+    private ValidationService validationService;
 
     @Value("${loan.amount}")
     private int loanAmt;
@@ -36,8 +36,7 @@ public class LoanQuoteConsoleApp implements CommandLineRunner {
 
         try {
             Loan loan = new Loan(loanAmt);
-            loanValidationService.validateLoanRequest(loan);
-            LoanQuote quote = loanCalculationService.processQuote(loan);
+            LoanQuote quote = quoteCalculationService.processQuote(loan);
             System.out.println(quote.prettyPrint());
         } catch (InvalidLoanAmount invalidLoanAmount) {
             //invalidLoanAmount.printStackTrace();

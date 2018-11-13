@@ -1,6 +1,9 @@
 package co.uk.zopa.challenge.services;
 
+import co.uk.zopa.challenge.exceptions.MarketInsufficientFunds;
+import co.uk.zopa.challenge.interfaces.MarketService;
 import co.uk.zopa.challenge.model.Lender;
+import co.uk.zopa.challenge.model.Loan;
 import co.uk.zopa.challenge.utilities.CSVUtility;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +19,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public @Data
-class MarketService {
+class MarketCSVService implements MarketService {
 
     private List<Lender> lenders;
 
@@ -34,6 +37,13 @@ class MarketService {
 
     public void sortLendersByLowestRate() {
         lenders.sort(Comparator.comparing(Lender::getRate));
+    }
+
+    public void validateMarketSufficientFunds(Loan loan) throws MarketInsufficientFunds {
+
+        if (loan.getAmount() > getAvailableAmount())
+            throw new MarketInsufficientFunds(String.format("Market can't fulfill loan request: loanAmount (%s) > marketAvailable(%s)",loan.getAmount(), getAvailableAmount()));
+
     }
 
 }
